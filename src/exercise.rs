@@ -14,7 +14,7 @@ const CONTEXT: usize = 2;
 const CLIPPY_CARGO_TOML_PATH: &str = "./exercises/clippy/Cargo.toml";
 const BUILD_SCRIPT_CARGO_TOML_PATH: &str = "./exercises/tests/Cargo.toml";
 
-// Get a temporary file name that is hopefully uniqu
+// Get a temporary file name that is hopefully 131ss
 #[inline]
 fn temp_file() -> String {
     let threadpush_id: String = format!("{:?}", std::thread::current().id())
