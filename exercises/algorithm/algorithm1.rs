@@ -6,7 +6,6 @@
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
-use std::vec::*;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -69,14 +68,45 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(list_a:LinkedList<T>, list_b:LinkedList<T>) -> Self
+	where
+	    T: Ord + Clone,
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
-        }
+	    let mut result = LinkedList::new();
+	    let mut current_a = list_a.start;
+	    let mut current_b = list_b.start;
+	
+	    // 比较两个链表的节点，将较小的添加到结果链表
+	    while let (Some(node_a), Some(node_b)) = (current_a, current_b) {
+	        let a_val = unsafe { &(*node_a.as_ptr()).val };
+	        let b_val = unsafe { &(*node_b.as_ptr()).val };
+	
+	        if a_val <= b_val {
+	            // 将a节点的值添加到结果链表
+	            result.add(a_val.clone());
+	            current_a = unsafe { (*node_a.as_ptr()).next };
+	        } else {
+	            // 将b节点的值添加到结果链表
+	            result.add(b_val.clone());
+	            current_b = unsafe { (*node_b.as_ptr()).next };
+	        }
+	    }
+	
+	    // 处理list_a剩余的节点
+	    while let Some(node) = current_a {
+	        let val = unsafe { &(*node.as_ptr()).val };
+	        result.add(val.clone());
+	        current_a = unsafe { (*node.as_ptr()).next };
+	    }
+	
+	    // 处理list_b剩余的节点
+	    while let Some(node) = current_b {
+	        let val = unsafe { &(*node.as_ptr()).val };
+	        result.add(val.clone());
+	        current_b = unsafe { (*node.as_ptr()).next };
+	    }
+	
+	    result
 	}
 }
 
