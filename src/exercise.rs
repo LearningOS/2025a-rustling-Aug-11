@@ -22,7 +22,7 @@ fn temp_file() -> String {
         .filter(|c| c.is_alphanumeric())
         .collect();
 
-    format!("./temp_{}_{thread_id}", process::id())
+    format!("./temp_{}_{threadpush_id}", process::id())
 }
 
 // The mode of the exercise.
@@ -110,7 +110,7 @@ impl Drop for FileHandle {
 }
 
 impl Exercise {
-    pub fn compile(&self) -> Result<CompiledExercise, ExerciseOutput> {
+    pub fn compile(&self) -> Result<CompiledExercise<'_>, ExerciseOutput> {
         let cmd = match self.mode {
             Mode::Compile => Command::new("rustc")
                 .args(&[self.path.to_str().unwrap(), "-o", &temp_file()])
@@ -376,4 +376,8 @@ mod test {
         let out = exercise.compile().unwrap().run().unwrap();
         assert!(out.stdout.contains("THIS TEST TOO SHALL PASS"));
     }
+}
+
+fn main() {
+    println!("Hello, Rust!");
 }
