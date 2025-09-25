@@ -31,8 +31,6 @@ enum ParsePersonError {
     ParseInt(ParseIntError),
 }
 
-// I AM NOT DONE
-
 // Steps:
 // 1. If the length of the provided string is 0, an error should be returned
 // 2. Split the given string on the commas present in it
@@ -40,7 +38,7 @@ enum ParsePersonError {
 //    error
 // 4. Extract the first element from the split operation and use it as the name
 // 5. Extract the other element from the split operation and parse it into a
-//    `usize` as the age with something like `"4".parse::<usize>()`
+//    `usize` as the age with something like "4".parse::<usize>()
 // 6. If while extracting the name and the age something goes wrong, an error
 //    should be returned
 // If everything goes well, then return a Result of a Person object
@@ -52,6 +50,36 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        // 1. 检查字符串是否为空
+        if s.is_empty() {
+            return Err(ParsePersonError::Empty);
+        }
+        
+        // 2. 按逗号分割字符串
+        let parts: Vec<&str> = s.split(',').collect();
+        
+        // 3. 检查分割后的元素数量是否为2
+        if parts.len() != 2 {
+            return Err(ParsePersonError::BadLen);
+        }
+        
+        // 4. 提取第一个元素作为name
+        let name = parts[0].trim();
+        
+        // 检查name是否为空
+        if name.is_empty() {
+            return Err(ParsePersonError::NoName);
+        }
+        
+        // 5. 提取第二个元素并尝试解析为usize作为age
+        let age_str = parts[1].trim();
+        let age = age_str.parse::<usize>().map_err(ParsePersonError::ParseInt)?;
+        
+        // 6. 如果一切顺利，返回Person对象
+        Ok(Person {
+            name: String::from(name),
+            age,
+        })
     }
 }
 
