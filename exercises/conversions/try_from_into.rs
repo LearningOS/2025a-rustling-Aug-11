@@ -37,7 +37,7 @@ enum IntoColorError {
 
 // 辅助函数：检查i16值是否在0..=255范围内，并转换为u8
 fn check_and_convert(value: i16) -> Result<u8, IntoColorError> {
-    if value >= 0 && value <= 255 {
+    if (0..=255).contains(&value) {
         Ok(value as u8)
     } else {
         Err(IntoColorError::IntConversion)
@@ -101,7 +101,7 @@ fn main() {
     let c2: Result<Color, _> = [183, 65, 14].try_into();
     println!("{:?}", c2);
 
-    let v = vec![183, 65, 14];
+    let v = [183, 65, 14];
     // With slice we should use `try_from` function
     let c3 = Color::try_from(&v[..]);
     println!("{:?}", c3);
