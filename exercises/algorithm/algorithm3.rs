@@ -3,8 +3,6 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
-
 fn sort<T: Ord>(array: &mut [T]){
 	// 如果数组长度小于等于1，则已经排序好
 	if array.len() <= 1 {
