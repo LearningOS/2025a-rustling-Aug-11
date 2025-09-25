@@ -6,6 +6,7 @@
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
+use std::vec::*;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -59,49 +60,20 @@ impl<T> LinkedList<T> {
     }
 
     pub fn get(&mut self, index: i32) -> Option<&T> {
-        if index < 0 {
-            return None;
+        self.get_ith_node(self.start, index)
+    }
+
+    fn get_ith_node(&mut self, node: Option<NonNull<Node<T>>>, index: i32) -> Option<&T> {
+        match node {
+            None => None,
+            Some(next_ptr) => match index {
+                0 => Some(unsafe { &(*next_ptr.as_ptr()).val }),
+                _ => self.get_ith_node(unsafe { (*next_ptr.as_ptr()).next }, index - 1),
+            },
         }
-        
-        let mut current = self.start;
-        let mut current_index = 0;
-        
-        while let Some(node_ptr) = current {
-            if current_index == index {
-                return Some(unsafe { &(*node_ptr.as_ptr()).val });
-            }
-            
-            current = unsafe { (*node_ptr.as_ptr()).next };
-            current_index += 1;
-        }
-        
-        None
     }
 	pub fn reverse(&mut self){
-		// 如果链表为空或只有一个节点，无需反转
-		if self.length <= 1 {
-			return;
-		}
-		
-		let mut current = self.start;
-		let mut temp: Option<NonNull<Node<T>>>;
-		
-		// 交换每个节点的prev和next指针
-		while let Some(mut node_ptr) = current {
-			unsafe {
-				let node = node_ptr.as_mut();
-				// 保存当前节点的next指针
-				temp = node.next;
-				// 交换当前节点的prev和next
-				node.next = node.prev;
-				node.prev = temp;
-				// 移动到下一个节点
-				current = temp;
-			}
-		}
-		
-		// 交换start和end指针
-		std::mem::swap(&mut self.start, &mut self.end);
+		// TODO
 	}
 }
 
