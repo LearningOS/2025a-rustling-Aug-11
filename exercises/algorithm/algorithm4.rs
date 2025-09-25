@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -50,13 +49,21 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        if let Some(ref mut root_node) = self.root {
+            root_node.insert(value);
+        } else {
+            self.root = Some(Box::new(TreeNode::new(value)));
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        // 如果树为空，返回false
+        if let Some(ref root_node) = self.root {
+            root_node.search(value)
+        } else {
+            false
+        }
     }
 }
 
@@ -66,7 +73,52 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        //TODO
+        // 比较新值和当前节点值
+        match value.cmp(&self.value) {
+            // 如果新值小于当前节点值，插入到左子树
+            Ordering::Less => {
+                if let Some(ref mut left_node) = self.left {
+                    left_node.insert(value);
+                } else {
+                    self.left = Some(Box::new(TreeNode::new(value)));
+                }
+            },
+            // 如果新值大于当前节点值，插入到右子树
+            Ordering::Greater => {
+                if let Some(ref mut right_node) = self.right {
+                    right_node.insert(value);
+                } else {
+                    self.right = Some(Box::new(TreeNode::new(value)));
+                }
+            },
+            // 如果值相等，不做任何操作（二叉搜索树不允许重复值）
+            Ordering::Equal => {}
+        }
+    }
+    
+    // Search for a value in the tree
+    fn search(&self, value: T) -> bool {
+        // 比较目标值和当前节点值
+        match value.cmp(&self.value) {
+            // 如果目标值小于当前节点值，在左子树中搜索
+            Ordering::Less => {
+                if let Some(ref left_node) = self.left {
+                    left_node.search(value)
+                } else {
+                    false
+                }
+            },
+            // 如果目标值大于当前节点值，在右子树中搜索
+            Ordering::Greater => {
+                if let Some(ref right_node) = self.right {
+                    right_node.search(value)
+                } else {
+                    false
+                }
+            },
+            // 如果值相等，找到目标值
+            Ordering::Equal => true
+        }
     }
 }
 
@@ -121,6 +173,6 @@ mod tests {
             None => panic!("Root should not be None after insertion"),
         }
     }
-}    
+}
 
 
