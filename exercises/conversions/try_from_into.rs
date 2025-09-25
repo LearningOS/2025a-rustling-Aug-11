@@ -27,8 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
 // integers, an array of three integers, and a slice of integers.
@@ -37,10 +35,25 @@ enum IntoColorError {
 // time, but the slice implementation needs to check the slice length! Also note
 // that correct RGB color values must be integers in the 0..=255 range.
 
+// 辅助函数：检查i16值是否在0..=255范围内，并转换为u8
+fn check_and_convert(value: i16) -> Result<u8, IntoColorError> {
+    if value >= 0 && value <= 255 {
+        Ok(value as u8)
+    } else {
+        Err(IntoColorError::IntConversion)
+    }
+}
+
 // Tuple implementation
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (red, green, blue) = tuple;
+        Ok(Color {
+            red: check_and_convert(red)?,
+            green: check_and_convert(green)?,
+            blue: check_and_convert(blue)?,
+        })
     }
 }
 
@@ -48,6 +61,12 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let [red, green, blue] = arr;
+        Ok(Color {
+            red: check_and_convert(red)?,
+            green: check_and_convert(green)?,
+            blue: check_and_convert(blue)?,
+        })
     }
 }
 
@@ -55,6 +74,21 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        // 检查切片长度是否为3
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        
+        // 提取三个值并检查范围
+        let red = check_and_convert(slice[0])?;
+        let green = check_and_convert(slice[1])?;
+        let blue = check_and_convert(slice[2])?;
+        
+        Ok(Color {
+            red,
+            green,
+            blue,
+        })
     }
 }
 
