@@ -16,14 +16,27 @@
 use std::collections::HashMap;
 
 fn fruit_basket() -> HashMap<String, u32> {
-    let mut basket = // TODO: declare your hash map here.
+    // 声明一个HashMap，键为String类型，值为u32类型
+    let mut basket = HashMap::new();
 
-    // Two bananas are already given for you :)
+    // Two bananas are already given for you :)    
     basket.insert(String::from("banana"), 2);
 
-    // TODO: Put more fruits in your basket here.
+    // 添加更多水果，确保至少3种不同水果，总数至少5个
+    basket.insert(String::from("apple"), 3);
+    basket.insert(String::from("mango"), 1);
 
     basket
+}
+
+// 添加main函数作为程序入口点
+fn main() {
+    let basket = fruit_basket();
+    println!("Fruit basket contents:");
+    for (fruit, count) in &basket {
+        println!("- {}: {}", fruit, count);
+    }
+    println!("Total fruits: {}", basket.values().sum::<u32>());
 }
 
 #[cfg(test)]
