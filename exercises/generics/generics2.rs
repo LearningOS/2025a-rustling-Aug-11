@@ -8,14 +8,23 @@
 
 // I AM NOT DONE
 
-struct Wrapper {
-    value: u32,
+// 使用泛型参数T来支持任何类型
+struct Wrapper<T> {
+    value: T,
 }
 
-impl Wrapper {
-    pub fn new(value: u32) -> Self {
+// 为泛型结构体实现方法
+impl<T> Wrapper<T> {
+    pub fn new(value: T) -> Self {
         Wrapper { value }
     }
+}
+
+// 添加main函数作为程序入口点
+fn main() {
+    // 简单的main函数，可以留空或添加一些示例代码
+    let wrapper = Wrapper::new(42);
+    println!("Wrapper contains: {}", wrapper.value);
 }
 
 #[cfg(test)]
