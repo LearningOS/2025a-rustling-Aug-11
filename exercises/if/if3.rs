@@ -15,7 +15,7 @@ pub fn animal_habitat(animal: &str) -> &'static str {
     };
 
     // DO NOT CHANGE THIS STATEMENT BELOW
-    let habitat = if identifier == 1 {
+    if identifier == 1 {
         "Beach"
     } else if identifier == 2 {
         "Burrow"
@@ -23,9 +23,15 @@ pub fn animal_habitat(animal: &str) -> &'static str {
         "Desert"
     } else {
         "Unknown"
-    };
+    }
+}
 
-    habitat
+fn main() {
+    println!("crab -> {}", animal_habitat("crab"));
+    println!("gopher -> {}", animal_habitat("gopher"));
+    println!("snake -> {}", animal_habitat("snake"));
+    println!("dinosaur -> {}", animal_habitat("dinosaur"));
+    println!("cat -> {}", animal_habitat("cat"));
 }
 
 #[cfg(test)]
