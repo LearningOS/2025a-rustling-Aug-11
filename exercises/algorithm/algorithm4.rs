@@ -3,6 +3,7 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
+//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -49,21 +50,36 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        if let Some(ref mut root_node) = self.root {
-            root_node.insert(value);
-        } else {
+        //TODO
+        // 填补开始：BST的插入逻辑
+        // 如果根节点为空，直接创建新节点作为根
+        if self.root.is_none() {
             self.root = Some(Box::new(TreeNode::new(value)));
+        } else {
+            // 否则调用根节点的insert方法递归插入
+            self.root.as_mut().unwrap().insert(value);
         }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        // 如果树为空，返回false
-        if let Some(ref root_node) = self.root {
-            root_node.search(value)
-        } else {
-            false
+        //TODO
+        // 填补开始：BST的查找逻辑
+        // 从根节点开始查找
+        let mut current = &self.root;
+        
+        // 遍历树直到找到节点或到达叶子节点
+        while let Some(node) = current {
+            match node.value.cmp(&value) {
+                Ordering::Equal => return true,  // 找到匹配值
+                Ordering::Greater => current = &node.left,  // 向左子树查找
+                Ordering::Less => current = &node.right,    // 向右子树查找
+            }
         }
+        
+        false  // 未找到
+        // 填补结束
+        
     }
 }
 
@@ -73,51 +89,33 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        // 比较新值和当前节点值
-        match value.cmp(&self.value) {
-            // 如果新值小于当前节点值，插入到左子树
-            Ordering::Less => {
-                if let Some(ref mut left_node) = self.left {
-                    left_node.insert(value);
-                } else {
+        //TODO
+        // 填补开始：节点的插入逻辑
+        match self.value.cmp(&value) {
+            // 相等的值不插入（BST通常不允许重复值）
+            Ordering::Equal => return,
+            
+            // 新值小于当前节点值，插入左子树
+            Ordering::Greater => {
+                if self.left.is_none() {
+                    // 左子树为空，直接创建新节点
                     self.left = Some(Box::new(TreeNode::new(value)));
-                }
-            },
-            // 如果新值大于当前节点值，插入到右子树
-            Ordering::Greater => {
-                if let Some(ref mut right_node) = self.right {
-                    right_node.insert(value);
                 } else {
-                    self.right = Some(Box::new(TreeNode::new(value)));
+                    // 左子树不为空，递归插入
+                    self.left.as_mut().unwrap().insert(value);
                 }
-            },
-            // 如果值相等，不做任何操作（二叉搜索树不允许重复值）
-            Ordering::Equal => {}
-        }
-    }
-    
-    // Search for a value in the tree
-    fn search(&self, value: T) -> bool {
-        // 比较目标值和当前节点值
-        match value.cmp(&self.value) {
-            // 如果目标值小于当前节点值，在左子树中搜索
+            }
+            
+            // 新值大于当前节点值，插入右子树
             Ordering::Less => {
-                if let Some(ref left_node) = self.left {
-                    left_node.search(value)
+                if self.right.is_none() {
+                    // 右子树为空，直接创建新节点
+                    self.right = Some(Box::new(TreeNode::new(value)));
                 } else {
-                    false
+                    // 右子树不为空，递归插入
+                    self.right.as_mut().unwrap().insert(value);
                 }
-            },
-            // 如果目标值大于当前节点值，在右子树中搜索
-            Ordering::Greater => {
-                if let Some(ref right_node) = self.right {
-                    right_node.search(value)
-                } else {
-                    false
-                }
-            },
-            // 如果值相等，找到目标值
-            Ordering::Equal => true
+            }
         }
     }
 }
@@ -173,6 +171,6 @@ mod tests {
             None => panic!("Root should not be None after insertion"),
         }
     }
-}
+}    
 
 

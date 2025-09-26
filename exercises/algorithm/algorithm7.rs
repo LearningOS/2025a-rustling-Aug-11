@@ -1,6 +1,6 @@
 /*
-	stack
-	This question requires you to use a stack to achieve a bracket match
+    stack
+    This question requires you to use a stack to achieve a bracket match
 */
 
 #[derive(Debug)]
@@ -30,11 +30,12 @@ impl<T> Stack<T> {
 		self.size += 1;
 	}
 	fn pop(&mut self) -> Option<T> {
-		if 0 == self.size {
-			return None;
+		if self.is_empty() {
+			None
+		} else {
+			self.size -= 1;
+			self.data.pop()
 		}
-		self.size -= 1;
-		self.data.pop()
 	}
 	fn peek(&self) -> Option<&T> {
 		if 0 == self.size {
@@ -51,7 +52,7 @@ impl<T> Stack<T> {
 	fn into_iter(self) -> IntoIter<T> {
 		IntoIter(self)
 	}
-	fn iter(&self) -> Iter<'_, T> {
+	fn iter(&self) -> Iter<T> {
 		let mut iterator = Iter { 
 			stack: Vec::new() 
 		};
@@ -60,7 +61,7 @@ impl<T> Stack<T> {
 		}
 		iterator
 	}
-	fn iter_mut(&mut self) -> IterMut<'_, T> {
+	fn iter_mut(&mut self) -> IterMut<T> {
 		let mut iterator = IterMut { 
 			stack: Vec::new() 
 		};
@@ -103,31 +104,33 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
 fn bracket_match(bracket: &str) -> bool
 {
-	let mut stack = Stack::new();
-	
-	for c in bracket.chars() {
-		match c {
-			'(' | '{' | '[' => stack.push(c),
-			')' => {
-				if stack.pop() != Some('(') {
-					return false;
-				}
-			},
-			'}' => {
-				if stack.pop() != Some('{') {
-					return false;
-				}
-			},
-			']' => {
-				if stack.pop() != Some('[') {
-					return false;
-				}
-			},
-			_ => {} // 忽略其他字符
-		}
-	}
-	
-	stack.is_empty()
+    let mut stack = Stack::new();
+    
+    for c in bracket.chars() {
+        match c {
+            // 遇到左括号则入栈
+            '(' | '{' | '[' => stack.push(c),
+            // 遇到右括号则检查匹配
+            ')' | '}' | ']' => {
+                // 如果栈为空或弹出的左括号不匹配当前右括号，则返回false
+                if let Some(top) = stack.pop() {
+                    if !((top == '(' && c == ')') || 
+                         (top == '{' && c == '}') || 
+                         (top == '[' && c == ']')) {
+                        return false;
+                    }
+                } else {
+                    // 没有对应的左括号
+                    return false;
+                }
+            },
+            // 其他字符忽略
+            _ => continue,
+        }
+    }
+    
+    // 所有括号处理完毕后，栈必须为空才是完全匹配
+    stack.is_empty()
 }
 
 #[cfg(test)]

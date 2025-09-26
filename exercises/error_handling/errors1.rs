@@ -9,9 +9,11 @@
 // Execute `rustlings hint errors1` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE
+
 pub fn generate_nametag_text(name: String) -> Result<String, String> {
     if name.is_empty() {
-        // Empty names aren't allowed.
+        // Empty names aren't allowed - return an error message
         Err("`name` was empty; it must be nonempty.".into())
     } else {
         Ok(format!("Hi! My name is {}", name))
@@ -38,9 +40,4 @@ mod tests {
             Err("`name` was empty; it must be nonempty.".into())
         );
     }
-}
-
-fn main() {
-    // 简单的main函数，用于满足二进制程序的要求
-    println!("errors1.rs 练习已完成！");
 }

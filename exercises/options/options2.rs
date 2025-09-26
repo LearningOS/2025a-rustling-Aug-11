@@ -3,6 +3,8 @@
 // Execute `rustlings hint options2` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -10,7 +12,7 @@ mod tests {
         let target = "rustlings";
         let optional_target = Some(target);
 
-        // Make this an if let statement whose value is "Some" type
+        // 使用if let处理Some类型
         if let Some(word) = optional_target {
             assert_eq!(word, target);
         }
@@ -27,9 +29,9 @@ mod tests {
 
         let mut cursor = range;
 
-        // Make this a while let statement - stack Option<T>s to handle vector.pop()
+        // 使用while let处理嵌套的Option类型
         while let Some(Some(integer)) = optional_integers.pop() {
-            assert_eq!(integer, cursor);
+            assert_eq!(integer, cursor as i8);
             cursor -= 1;
         }
 
@@ -37,7 +39,3 @@ mod tests {
     }
 }
 
-fn main() {
-    // Just a simple main function to make the program runnable
-    println!("options2.rs练习 - Option类型的if let和while let语法练习");
-}

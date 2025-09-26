@@ -14,7 +14,7 @@
 // Execute `rustlings hint hashmaps3` or use the `hint` watch subcommand for a
 // hint.
 
-
+// I AM NOT DONE
 
 use std::collections::HashMap;
 
@@ -22,22 +22,6 @@ use std::collections::HashMap;
 struct Team {
     goals_scored: u8,
     goals_conceded: u8,
-}
-
-fn main() {
-    let results = "".to_string()
-        + "England,France,4,2\n"
-        + "France,Italy,3,1\n"
-        + "Poland,Spain,2,0\n"
-        + "Germany,England,2,1\n";
-    
-    let scores = build_scores_table(results);
-    
-    println!("Soccer Scores Table:");
-    for (team, stats) in &scores {
-        println!("{}: Goals Scored = {}, Goals Conceded = {}", 
-                 team, stats.goals_scored, stats.goals_conceded);
-    }
 }
 
 fn build_scores_table(results: String) -> HashMap<String, Team> {
@@ -51,27 +35,27 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         let team_2_name = v[1].to_string();
         let team_2_score: u8 = v[3].parse().unwrap();
         
-        // 更新球队1的比分数据
-        // 如果球队1已经在比分表中，更新它的进球数和失球数
-        // 如果球队1不在比分表中，创建一个新的Team实例
-        scores.entry(team_1_name.clone()).and_modify(|team| {
-            team.goals_scored += team_1_score;
-            team.goals_conceded += team_2_score;
-        }).or_insert(Team {
-            goals_scored: team_1_score,
-            goals_conceded: team_2_score,
-        });
+        // 更新第一支球队的统计数据
+        scores.entry(team_1_name.clone())
+            .and_modify(|t| {
+                t.goals_scored += team_1_score;
+                t.goals_conceded += team_2_score;
+            })
+            .or_insert(Team {
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score,
+            });
         
-        // 更新球队2的比分数据
-        // 如果球队2已经在比分表中，更新它的进球数和失球数
-        // 如果球队2不在比分表中，创建一个新的Team实例
-        scores.entry(team_2_name).and_modify(|team| {
-            team.goals_scored += team_2_score;
-            team.goals_conceded += team_1_score;
-        }).or_insert(Team {
-            goals_scored: team_2_score,
-            goals_conceded: team_1_score,
-        });
+        // 更新第二支球队的统计数据
+        scores.entry(team_2_name.clone())
+            .and_modify(|t| {
+                t.goals_scored += team_2_score;
+                t.goals_conceded += team_1_score;
+            })
+            .or_insert(Team {
+                goals_scored: team_2_score,
+                goals_conceded: team_1_score,
+            });
     }
     scores
 }

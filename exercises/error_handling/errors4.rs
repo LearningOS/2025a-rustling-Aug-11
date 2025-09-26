@@ -3,6 +3,8 @@
 // Execute `rustlings hint errors4` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE
+
 #[derive(PartialEq, Debug)]
 struct PositiveNonzeroInteger(u64);
 
@@ -12,19 +14,18 @@ enum CreationError {
     Zero,
 }
 
-fn main() {
-    // A simple main function to satisfy the binary program requirement
-}
-
 impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
-        if value > 0 {
-            Ok(PositiveNonzeroInteger(value as u64))
-        } else if value == 0 {
-            Err(CreationError::Zero)
-        } else {
-            Err(CreationError::Negative)
+        // 检查值是否为负数
+        if value < 0 {
+            return Err(CreationError::Negative);
         }
+        // 检查值是否为零
+        if value == 0 {
+            return Err(CreationError::Zero);
+        }
+        // 对于正数值，安全转换为u64并返回
+        Ok(PositiveNonzeroInteger(value as u64))
     }
 }
 
@@ -37,3 +38,4 @@ fn test_creation() {
     );
     assert_eq!(Err(CreationError::Zero), PositiveNonzeroInteger::new(0));
 }
+

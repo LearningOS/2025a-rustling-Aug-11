@@ -1,6 +1,6 @@
 /*
-	dfs
-	This problem requires you to implement a basic DFS traversal
+    dfs
+    This problem requires you to implement a basic DFS traversal
 */
 
 use std::collections::HashSet;
@@ -22,23 +22,12 @@ impl Graph {
     }
 
     fn dfs_util(&self, v: usize, visited: &mut HashSet<usize>, visit_order: &mut Vec<usize>) {
-        // 检查节点是否在图的有效范围内
-        if v >= self.adj.len() {
-            return;
-        }
-        
-        // 如果节点已经访问过，直接返回
-        if visited.contains(&v) {
-            return;
-        }
-        
-        // 标记节点为已访问
+        // 将当前节点标记为已访问
         visited.insert(v);
-        
-        // 将节点添加到访问顺序中
+        // 记录访问顺序
         visit_order.push(v);
         
-        // 递归访问所有未访问的邻居节点
+        // 递归访问所有未被访问的邻接节点
         for &neighbor in &self.adj[v] {
             if !visited.contains(&neighbor) {
                 self.dfs_util(neighbor, visited, visit_order);
@@ -46,7 +35,7 @@ impl Graph {
         }
     }
 
-    // Perform a depth-first search on the graph, return the order of visited nodes
+    // 执行深度优先搜索，返回节点的访问顺序
     fn dfs(&self, start: usize) -> Vec<usize> {
         let mut visited = HashSet::new();
         let mut visit_order = Vec::new(); 
@@ -95,4 +84,3 @@ mod tests {
         assert_eq!(visit_order_disconnected, vec![3, 4]); 
     }
 }
-

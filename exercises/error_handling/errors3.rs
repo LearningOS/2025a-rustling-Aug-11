@@ -7,9 +7,11 @@
 // Execute `rustlings hint errors3` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE
+
 use std::num::ParseIntError;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), ParseIntError> {
     let mut tokens = 100;
     let pretend_user_input = "8";
 

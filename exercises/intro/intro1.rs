@@ -24,17 +24,17 @@ fn main() {
     println!(r#" |_|   \__,_|___/\__|_|_|_| |_|\__, |___/ "#);
     println!(r#"                               |___/      "#);
     println!();
-    println!("错误信息示例:");
-    println!("- 编译错误: 语法错误、类型不匹配、未使用的变量");
-    println!("- 运行时错误: 空指针解引用、数组越界、除零错误");
-    println!("- 逻辑错误: 算法错误、条件判断错误");
+    println!("This exercise compiles successfully. The remaining exercises contain a compiler");
+    println!("or logic error. The central concept behind Rustlings is to fix these errors and");
+    println!("solve the exercises. Good luck!");
     println!();
-    println!("解决方法:");
-    println!("1. 仔细阅读错误信息，定位问题所在");
-    println!("2. 检查代码语法和逻辑");
-    println!("3. 使用 cargo check 快速检查编译错误");
-    println!("4. 使用 cargo clippy 检查代码质量");
-    println!("5. 添加适当的测试用例验证修复效果");
+    println!("The source for this exercise is in `exercises/intro/intro1.rs`. Have a look!");
+    println!(
+        "Going forward, the source of the exercises will always be in the success/failure output."
+    );
     println!();
-    println!("继续加油，祝你学习Rust愉快！")
+    println!(
+        "If you want to use rust-analyzer, Rust's LSP implementation, make sure your editor is set"
+    );
+    println!("up, and then run `rustlings lsp` before continuing.")
 }

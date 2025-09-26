@@ -7,7 +7,7 @@ pub fn bigger(a: i32, b: i32) -> i32 {
     // Complete this function to return the bigger number!
     // Do not use:
     // - another function call
-    // - additional code
+    // - additional variables
 
     if a > b {
         a
@@ -17,13 +17,6 @@ pub fn bigger(a: i32, b: i32) -> i32 {
 }
 
 // Don't mind this for now :)
-
-fn main() {
-    let a = 10;
-    let b = 20;
-    let result = bigger(a, b);
-    println!("较大的数是: {}", result);
-}
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -11,7 +11,7 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-
+// I AM NOT DONE
 
 use std::collections::HashMap;
 
@@ -20,10 +20,6 @@ enum Progress {
     None,
     Some,
     Complete,
-}
-
-fn main() {
-    println!("成功完成迭代器练习！");
 }
 
 fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
@@ -37,9 +33,8 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 }
 
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
-    // map is a hashmap with String keys and Progress values.
-    // map = { "variables1": Complete, "from_str": None, ... }
-    map.values().filter(|&v| v == &value).count()
+    // 使用迭代器过滤出与目标进度匹配的元素，然后计数
+    map.values().filter(|&&v| v == value).count()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -55,12 +50,11 @@ fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progres
 }
 
 fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
-    // collection is a slice of hashmaps.
-    // collection = [{ "variables1": Complete, "from_str": None, ... },
-    //     { "variables2": Complete, ... }, ... ]
-    collection.iter()
+    // 先将集合中的所有哈希映射的values展平为一个迭代器，再过滤计数
+    collection
+        .iter()
         .flat_map(|map| map.values())
-        .filter(|&v| v == &value)
+        .filter(|&&v| v == value)
         .count()
 }
 
@@ -160,4 +154,4 @@ mod tests {
 
         vec![map, other]
     }
-}
+}// iterators5.rs

@@ -3,11 +3,12 @@
 // Execute `rustlings hint functions1` or use the `hint` watch subcommand for a
 // hint.
 
-
 fn main() {
     call_me();
 }
 
 fn call_me() {
-    println!("I was called!");
+    // 添加函数体内容，这里使用println!宏作为示例
+    println!("Called!");
 }
+    

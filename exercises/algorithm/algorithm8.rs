@@ -1,7 +1,8 @@
 /*
-	queue
-	This question requires you to use queues to implement the functionality of the stac
+    queue
+    This question requires you to use queues to implement the functionality of the stack
 */
+
 #[derive(Debug)]
 pub struct Queue<T> {
     elements: Vec<T>,
@@ -18,7 +19,7 @@ impl<T> Queue<T> {
         self.elements.push(value)
     }
 
-    pub fn dequeue(&mut self) -> Result<T, &str> {
+    pub fn dequeue(&mut self) -> Result<T, &'static str> {  // 使用'static生命周期
         if !self.elements.is_empty() {
             Ok(self.elements.remove(0usize))
         } else {
@@ -26,7 +27,7 @@ impl<T> Queue<T> {
         }
     }
 
-    pub fn peek(&self) -> Result<&T, &str> {
+    pub fn peek(&self) -> Result<&T, &'static str> {  // 使用'static生命周期
         match self.elements.first() {
             Some(value) => Ok(value),
             None => Err("Queue is empty"),
@@ -50,63 +51,69 @@ impl<T> Default for Queue<T> {
     }
 }
 
+// 修复命名规范：使用UpperCamelCase
 pub struct MyStack<T>
 {
-	q1:Queue<T>,
-	q2:Queue<T>
+    q1: Queue<T>,
+    q2: Queue<T>
 }
+
 impl<T> MyStack<T> {
     pub fn new() -> Self {
         Self {
-		q1:Queue::<T>::new(),
-		q2:Queue::<T>::new()
+            q1: Queue::<T>::new(),
+            q2: Queue::<T>::new()
         }
     }
+    
     pub fn push(&mut self, elem: T) {
-        // 将元素添加到非空的队列中，如果两个都为空则添加到q1
-        if !self.q1.is_empty() {
-            self.q1.enqueue(elem);
-        } else {
+        if self.q1.is_empty() {
             self.q2.enqueue(elem);
+        } else {
+            self.q1.enqueue(elem);
         }
     }
-    pub fn pop(&mut self) -> Result<T, &str> {
-        // 如果两个队列都为空，返回错误
-        if self.is_empty() {
+    
+    // 修复借用冲突：避免同时借用self的多个部分
+    pub fn pop(&mut self) -> Result<T, &'static str> {  // 使用'static生命周期
+        // 检查栈是否为空
+        if self.q1.is_empty() && self.q2.is_empty() {
             return Err("Stack is empty");
         }
         
-        // 确定哪个队列非空
-        let (source, target) = if !self.q1.is_empty() {
-            (&mut self.q1, &mut self.q2)
+        // 移动元素并获取结果
+        if !self.q1.is_empty() {
+            // 先移动元素，再获取结果，避免同时借用
+            Self::move_elements(&mut self.q1, &mut self.q2)?;
+            self.q1.dequeue()
         } else {
-            (&mut self.q2, &mut self.q1)
-        };
-        
-        // 将n-1个元素从source移动到target
-        while source.size() > 1 {
-            if let Ok(val) = source.dequeue() {
-                target.enqueue(val);
-            }
+            Self::move_elements(&mut self.q2, &mut self.q1)?;
+            self.q2.dequeue()
         }
-        
-        // 返回最后一个元素
-        source.dequeue()
     }
+    
+    // 辅助方法：设为静态方法避免self的额外借用
+    fn move_elements(from: &mut Queue<T>, to: &mut Queue<T>) -> Result<(), &'static str> {
+        while from.size() > 1 {
+            let val = from.dequeue()?;
+            to.enqueue(val);
+        }
+        Ok(())
+    }
+    
     pub fn is_empty(&self) -> bool {
-        // 检查两个队列是否都为空
         self.q1.is_empty() && self.q2.is_empty()
     }
 }
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	
-	#[test]
-	fn test_queue(){
-		let mut s = MyStack::<i32>::new();
-		assert_eq!(s.pop(), Err("Stack is empty"));
+    use super::*;
+    
+    #[test]
+    fn test_queue(){
+        let mut s = MyStack::<i32>::new();
+        assert_eq!(s.pop(), Err("Stack is empty"));
         s.push(1);
         s.push(2);
         s.push(3);
@@ -120,5 +127,5 @@ mod tests {
         assert_eq!(s.pop(), Ok(1));
         assert_eq!(s.pop(), Err("Stack is empty"));
         assert_eq!(s.is_empty(), true);
-	}
+    }
 }

@@ -7,10 +7,6 @@
 // for a hint.
 
 
-fn main() {
-    // 主函数，保持程序能正常编译
-}
-
 #[test]
 fn indexing_tuple() {
     let numbers = (1, 2, 3);

@@ -5,16 +5,19 @@
 // Execute `rustlings hint enums3` or use the `hint` watch subcommand for a
 // hint.
 
-struct Point {
-    x: u8,
-    y: u8,
-}
+// I AM NOT DONE
 
 enum Message {
+    // 实现与使用场景匹配的消息变体类型
     ChangeColor(u8, u8, u8),
     Echo(String),
     Move(Point),
     Quit,
+}
+
+struct Point {
+    x: u8,
+    y: u8,
 }
 
 struct State {
@@ -40,6 +43,7 @@ impl State {
     }
 
     fn process(&mut self, message: Message) {
+        // 使用match表达式处理不同的消息变体
         match message {
             Message::ChangeColor(r, g, b) => self.change_color((r, g, b)),
             Message::Echo(s) => self.echo(s),
@@ -72,9 +76,4 @@ mod tests {
         assert_eq!(state.quit, true);
         assert_eq!(state.message, "hello world");
     }
-}
-
-fn main() {
-    // 简单的main函数，用于满足二进制程序的要求
-    println!("enums3.rs 练习已完成！");
 }

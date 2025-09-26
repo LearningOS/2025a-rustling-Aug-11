@@ -27,29 +27,6 @@ enum Fruit {
     Pineapple,
 }
 
-// 添加main函数作为程序入口点
-fn main() {
-    let mut basket = HashMap::new();
-    basket.insert(Fruit::Apple, 4);
-    basket.insert(Fruit::Mango, 2);
-    basket.insert(Fruit::Lychee, 5);
-    
-    fruit_basket(&mut basket);
-    
-    println!("Fruit basket after adding new fruits:");
-    for (fruit, count) in &basket {
-        let fruit_name = match fruit {
-            Fruit::Apple => "Apple",
-            Fruit::Banana => "Banana",
-            Fruit::Mango => "Mango",
-            Fruit::Lychee => "Lychee",
-            Fruit::Pineapple => "Pineapple",
-        };
-        println!("- {}: {}", fruit_name, count);
-    }
-    println!("Total fruits: {}", basket.values().sum::<u32>());
-}
-
 fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
     let fruit_kinds = vec![
         Fruit::Apple,
@@ -60,15 +37,8 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
     ];
 
     for fruit in fruit_kinds {
-        // 使用entry API更高效地检查和插入水果
-        if let std::collections::hash_map::Entry::Vacant(e) = basket.entry(fruit) {
-            // 对于不同的水果类型，添加至少1个
-            match e.key() {
-                Fruit::Banana => e.insert(1),
-                Fruit::Pineapple => e.insert(1),
-                _ => continue, // 其他水果已经在篮子里，不需要添加
-            };
-        }
+        // 只插入篮子中不存在的水果，且每种至少添加1个
+        basket.entry(fruit).or_insert(1);
     }
 }
 

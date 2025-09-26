@@ -17,12 +17,6 @@ pub fn foo_if_fizz(fizzish: &str) -> &str {
 }
 
 // No test changes needed!
-
-fn main() {
-    println!("fizz -> {}", foo_if_fizz("fizz"));
-    println!("fuzz -> {}", foo_if_fizz("fuzz"));
-    println!("other -> {}", foo_if_fizz("other"));
-}
 #[cfg(test)]
 mod tests {
     use super::*;

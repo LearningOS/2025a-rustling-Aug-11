@@ -8,7 +8,10 @@
 // Execute `rustlings hint modules3` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE
+
 // TODO: Complete this use statement
+// 引入std::time模块中的SystemTime和UNIX_EPOCH
 use std::time::{SystemTime, UNIX_EPOCH};
 
 fn main() {
@@ -17,3 +20,4 @@ fn main() {
         Err(_) => panic!("SystemTime before UNIX EPOCH!"),
     }
 }
+

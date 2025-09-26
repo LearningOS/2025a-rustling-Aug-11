@@ -22,7 +22,7 @@
 
 #[derive(PartialEq, Debug)]
 pub enum List {
-    Cons(i32, Box<List>),
+    Cons(i32, Box<List>),  // 使用Box包装递归的List类型
     Nil,
 }
 
@@ -35,11 +35,12 @@ fn main() {
 }
 
 pub fn create_empty_list() -> List {
-    List::Nil
+    List::Nil  // 空列表就是Nil变体
 }
 
 pub fn create_non_empty_list() -> List {
-    List::Cons(1, Box::new(List::Nil))
+    // 创建一个包含值1，后续为包含值2，最后以Nil结尾的列表
+    List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil))))
 }
 
 #[cfg(test)]

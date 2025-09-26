@@ -3,6 +3,7 @@
 	This problem requires you to implement a basic BFS algorithm
 */
 
+//I AM NOT DONE
 use std::collections::VecDeque;
 
 // Define a graph
@@ -26,37 +27,33 @@ impl Graph {
 
     // Perform a breadth-first search on the graph, return the order of visited nodes
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
-        // 检查起始节点是否有效
-        if start >= self.adj.len() {
-            return vec![];
-        }
         
-        // 用于存储访问顺序的向量
-        let mut visit_order = Vec::new();
-        // 用于标记节点是否已访问
+		//TODO
+        // 填补开始：BFS算法实现
+        // 1. 初始化访问标记数组，记录节点是否已被访问
         let mut visited = vec![false; self.adj.len()];
-        // 用于BFS的队列
+        // 2. 初始化队列，用于BFS的层级遍历
         let mut queue = VecDeque::new();
-        
-        // 将起始节点加入队列并标记为已访问
-        queue.push_back(start);
+        // 3. 初始化访问顺序记录向量
+        let mut visit_order = vec![];
+
+        // 4. 标记起始节点为已访问，加入队列和访问顺序
         visited[start] = true;
-        
-        // 当队列不为空时进行BFS
+        queue.push_back(start);
+        visit_order.push(start);
+
+        // 5. 当队列不为空时，继续遍历
         while let Some(node) = queue.pop_front() {
-            // 将当前节点添加到访问顺序中
-            visit_order.push(node);
-            
-            // 遍历当前节点的所有邻居
+            // 6. 遍历当前节点的所有邻接节点
             for &neighbor in &self.adj[node] {
-                // 如果邻居节点尚未访问，则加入队列并标记为已访问
+                // 7. 如果邻接节点未被访问，则标记为已访问并加入队列和访问顺序
                 if !visited[neighbor] {
-                    queue.push_back(neighbor);
                     visited[neighbor] = true;
+                    queue.push_back(neighbor);
+                    visit_order.push(neighbor);
                 }
             }
         }
-        
         visit_order
     }
 }
@@ -104,7 +101,7 @@ mod tests {
 
     #[test]
     fn test_bfs_single_node() {
-        let graph = Graph::new(1);
+        let mut graph = Graph::new(1);
 
         let visited_order = graph.bfs_with_return(0);
         assert_eq!(visited_order, vec![0]);

@@ -3,46 +3,26 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-fn sort<T: Ord>(array: &mut [T]){
-	// 如果数组长度小于等于1，则已经排序好
-	if array.len() <= 1 {
-		return;
-	}
-	
-	// 调用快速排序辅助函数
-	quick_sort(array, 0, (array.len() - 1) as isize);
-}
+// I AM NOT DONE
 
-fn quick_sort<T: Ord>(array: &mut [T], low: isize, high: isize) {
-	if low < high {
-		// 获取分区点
-		let pivot_index = partition(array, low, high);
-		// 递归排序分区点左边的元素
-		quick_sort(array, low, pivot_index - 1);
-		// 递归排序分区点右边的元素
-		quick_sort(array, pivot_index + 1, high);
-	}
-}
-
-fn partition<T: Ord>(array: &mut [T], low: isize, high: isize) -> isize {
-	// 选择最右边的元素作为基准
-	let pivot_index = high as usize;
-	let mut i = low - 1;
-	
-	for j in low..high {
-		// 如果当前元素小于或等于基准元素
-		if array[j as usize] <= array[pivot_index] {
-			i += 1;
-			// 交换元素
-			array.swap(i as usize, j as usize);
-		}
-	}
-	
-	// 将基准元素放到正确的位置
-	array.swap((i + 1) as usize, pivot_index);
-	
-	// 返回基准元素的索引
-	i + 1
+fn sort<T>(array: &mut [T])
+	//TODO
+where
+    T: Ord, // 填补：添加类型约束，要求元素可比较
+{
+    // 填补开始：冒泡排序实现
+    let n = array.len();
+    // 外层循环控制排序轮次
+    for i in 0..n {
+        // 内层循环进行相邻元素比较和交换
+        // 每轮结束后，最大的元素会"冒泡"到末尾，因此可以减少比较次数
+        for j in 0..n - i - 1 {
+            // 比较相邻元素，如果前一个大于后一个则交换
+            if array[j] > array[j + 1] {
+                array.swap(j, j + 1);
+            }
+        }
+    }
 }
 #[cfg(test)]
 mod tests {

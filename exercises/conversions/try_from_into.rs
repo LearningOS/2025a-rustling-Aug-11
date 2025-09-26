@@ -27,17 +27,9 @@ enum IntoColorError {
     IntConversion,
 }
 
-// Your task is to complete this implementation and return an Ok result of inner
-// type Color. You need to create an implementation for a tuple of three
-// integers, an array of three integers, and a slice of integers.
-//
-// Note that the implementation for tuple and array will be checked at compile
-// time, but the slice implementation needs to check the slice length! Also note
-// that correct RGB color values must be integers in the 0..=255 range.
-
-// 辅助函数：检查i16值是否在0..=255范围内，并转换为u8
-fn check_and_convert(value: i16) -> Result<u8, IntoColorError> {
-    if (0..=255).contains(&value) {
+// 辅助函数：将i16转换为u8，确保在0..=255范围内
+fn convert_component(value: i16) -> Result<u8, IntoColorError> {
+    if value >= 0 && value <= 255 {
         Ok(value as u8)
     } else {
         Err(IntoColorError::IntConversion)
@@ -48,11 +40,10 @@ fn check_and_convert(value: i16) -> Result<u8, IntoColorError> {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
-        let (red, green, blue) = tuple;
         Ok(Color {
-            red: check_and_convert(red)?,
-            green: check_and_convert(green)?,
-            blue: check_and_convert(blue)?,
+            red: convert_component(tuple.0)?,
+            green: convert_component(tuple.1)?,
+            blue: convert_component(tuple.2)?,
         })
     }
 }
@@ -61,11 +52,10 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
-        let [red, green, blue] = arr;
         Ok(Color {
-            red: check_and_convert(red)?,
-            green: check_and_convert(green)?,
-            blue: check_and_convert(blue)?,
+            red: convert_component(arr[0])?,
+            green: convert_component(arr[1])?,
+            blue: convert_component(arr[2])?,
         })
     }
 }
@@ -79,15 +69,10 @@ impl TryFrom<&[i16]> for Color {
             return Err(IntoColorError::BadLen);
         }
         
-        // 提取三个值并检查范围
-        let red = check_and_convert(slice[0])?;
-        let green = check_and_convert(slice[1])?;
-        let blue = check_and_convert(slice[2])?;
-        
         Ok(Color {
-            red,
-            green,
-            blue,
+            red: convert_component(slice[0])?,
+            green: convert_component(slice[1])?,
+            blue: convert_component(slice[2])?,
         })
     }
 }
@@ -101,7 +86,7 @@ fn main() {
     let c2: Result<Color, _> = [183, 65, 14].try_into();
     println!("{:?}", c2);
 
-    let v = [183, 65, 14];
+    let v = vec![183, 65, 14];
     // With slice we should use `try_from` function
     let c3 = Color::try_from(&v[..]);
     println!("{:?}", c3);

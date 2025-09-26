@@ -1,11 +1,11 @@
 /*
-	single linked list merge
-	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
+    single linked list merge
+    This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
+use std::vec::*;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -68,46 +68,46 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>, list_b:LinkedList<T>) -> Self
-	where
-	    T: Ord + Clone,
-	{
-	    let mut result = LinkedList::new();
-	    let mut current_a = list_a.start;
-	    let mut current_b = list_b.start;
-	
-	    // 比较两个链表的节点，将较小的添加到结果链表
-	    while let (Some(node_a), Some(node_b)) = (current_a, current_b) {
-	        let a_val = unsafe { &(*node_a.as_ptr()).val };
-	        let b_val = unsafe { &(*node_b.as_ptr()).val };
-	
-	        if a_val <= b_val {
-	            // 将a节点的值添加到结果链表
-	            result.add(a_val.clone());
-	            current_a = unsafe { (*node_a.as_ptr()).next };
-	        } else {
-	            // 将b节点的值添加到结果链表
-	            result.add(b_val.clone());
-	            current_b = unsafe { (*node_b.as_ptr()).next };
-	        }
-	    }
-	
-	    // 处理list_a剩余的节点
-	    while let Some(node) = current_a {
-	        let val = unsafe { &(*node.as_ptr()).val };
-	        result.add(val.clone());
-	        current_a = unsafe { (*node.as_ptr()).next };
-	    }
-	
-	    // 处理list_b剩余的节点
-	    while let Some(node) = current_b {
-	        let val = unsafe { &(*node.as_ptr()).val };
-	        result.add(val.clone());
-	        current_b = unsafe { (*node.as_ptr()).next };
-	    }
-	
-	    result
-	}
+    
+    // 实现合并逻辑
+    pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+    where
+        T: Ord + Clone,  // 需要比较大小和克隆值
+    {
+        let mut result = LinkedList::new();
+        let mut a_current = list_a.start;  // 链表A的当前节点指针
+        let mut b_current = list_b.start;  // 链表B的当前节点指针
+
+        // 同时遍历两个链表，比较并添加较小的元素
+        while let (Some(a_ptr), Some(b_ptr)) = (a_current, b_current) {
+            let a_node = unsafe { a_ptr.as_ref() };  // 安全访问A节点
+            let b_node = unsafe { b_ptr.as_ref() };  // 安全访问B节点
+
+            if a_node.val <= b_node.val {
+                result.add(a_node.val.clone());  // 添加A节点的值
+                a_current = a_node.next;  // 移动A指针
+            } else {
+                result.add(b_node.val.clone());  // 添加B节点的值
+                b_current = b_node.next;  // 移动B指针
+            }
+        }
+
+        // 添加链表A的剩余元素
+        while let Some(a_ptr) = a_current {
+            let a_node = unsafe { a_ptr.as_ref() };
+            result.add(a_node.val.clone());
+            a_current = a_node.next;
+        }
+
+        // 添加链表B的剩余元素
+        while let Some(b_ptr) = b_current {
+            let b_node = unsafe { b_ptr.as_ref() };
+            result.add(b_node.val.clone());
+            b_current = b_node.next;
+        }
+
+        result  // 返回合并后的链表
+    }
 }
 
 impl<T> Display for LinkedList<T>

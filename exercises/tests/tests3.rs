@@ -19,11 +19,17 @@ mod tests {
 
     #[test]
     fn is_true_when_even() {
-        assert!();
+        // 测试偶数情况，期望返回true
+        assert!(is_even(2));
+        assert!(is_even(4));
+        assert!(is_even(0)); // 0是偶数
     }
 
     #[test]
     fn is_false_when_odd() {
-        assert!();
+        // 测试奇数情况，特别是题目要求的is_even(5)
+        assert!(!is_even(5));
+        assert!(!is_even(3));
+        assert!(!is_even(1));
     }
 }

@@ -22,11 +22,13 @@
 // Execute `rustlings hint errors5` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE
+
 use std::error;
 use std::fmt;
 use std::num::ParseIntError;
 
-// TODO: update the return type of `main()` to make this compile.
+// 更新main()的返回类型以支持多种错误类型
 fn main() -> Result<(), Box<dyn error::Error>> {
     let pretend_user_input = "42";
     let x: i64 = pretend_user_input.parse()?;

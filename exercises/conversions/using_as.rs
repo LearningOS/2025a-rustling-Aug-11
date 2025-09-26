@@ -12,6 +12,7 @@
 
 fn average(values: &[f64]) -> f64 {
     let total = values.iter().sum::<f64>();
+    // 使用as将usize类型的长度转换为f64，以匹配total的类型
     total / values.len() as f64
 }
 

@@ -6,10 +6,6 @@
 // for a hint.
 
 
-fn main() {
-    // 主函数，保持程序能正常编译
-}
-
 #[test]
 fn slice_out_of_array() {
     let a = [1, 2, 3, 4, 5];

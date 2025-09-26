@@ -16,6 +16,10 @@
 mod tests {
     #[test]
     fn you_can_assert() {
-        assert!();
+        // 让测试通过：传递一个true值给assert!
+        assert!(true);
+        
+        // 让测试失败：传递一个false值给assert!
+        // assert!(false);
     }
 }
