@@ -9,7 +9,10 @@
 
 
 fn main() {
-    let vec0 = Vec::new();
+    let mut vec0 = Vec::new();
+    vec0.push(22);
+    vec0.push(44);
+    vec0.push(66);
 
     let mut vec1 = fill_vec(vec0.clone());
 
@@ -21,11 +24,5 @@ fn main() {
 }
 
 fn fill_vec(vec: Vec<i32>) -> Vec<i32> {
-    let mut vec = vec;
-
-    vec.push(22);
-    vec.push(44);
-    vec.push(66);
-
     vec
 }
